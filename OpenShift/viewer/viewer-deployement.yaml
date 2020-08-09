@@ -19,7 +19,7 @@ spec:
       - name: github
       containers:
       - name:  dependencies-graph-viewer
-        image: docker.pkg.github.com/xclemence/dependencies-graph-viewer/dependencies-graph-viewer:1.0.5-beta
+        image: docker.pkg.github.com/xclemence/dependencies-graph-viewer/dependencies-graph-viewer:1.0.5
         env:
           - name: DEPENDENCIES_GRAPHQL_URI
             value: http://graph-graphql-dependencies.apps.ca-central-1.starter.openshift-online.com/graphql
