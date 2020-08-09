@@ -1,0 +1,12 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: graph-api
+  namespace: dependencies
+spec:
+  path: /
+  to:
+    kind: Service
+    name: graph-api-service
+  port:
+    targetPort: 8000

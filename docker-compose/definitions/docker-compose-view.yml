@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  dependencies-graph-view :
+    image: dependencies-graph-view:test
+    build:
+      context: ../../dependencies-graph-viewer
+      dockerfile: Dockerfile
+    ports: 
+      - 4100:4200
+    environment: 
+      - DEPENDENCIES_GRAPHQL_URI=http://localhost:4001/graphql
+    links: 
+      - dependencies-graph-graphql

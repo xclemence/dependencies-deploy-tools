@@ -1,0 +1,12 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: graph-graphql
+  namespace: dependencies
+spec:
+  path: /
+  to:
+    kind: Service
+    name: graph-graphql-service
+  port:
+    targetPort: 4001

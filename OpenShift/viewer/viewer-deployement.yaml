@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  graph-viewer-apps
+  namespace: dependencies
+  labels:
+    app:  dependencies-graph-viewer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  dependencies-graph-viewer
+  template:
+    metadata:
+      labels:
+        app:  dependencies-graph-viewer
+    spec:
+      imagePullSecrets:
+      - name: github
+      containers:
+      - name:  dependencies-graph-viewer
+        image: docker.pkg.github.com/xclemence/dependencies-graph-viewer/dependencies-graph-viewer:1.0.5-beta
+        env:
+          - name: DEPENDENCIES_GRAPHQL_URI
+            value: http://graph-graphql-dependencies.apps.ca-central-1.starter.openshift-online.com/graphql
+        ports:
+        - containerPort: 4200
+          protocol: TCP
+

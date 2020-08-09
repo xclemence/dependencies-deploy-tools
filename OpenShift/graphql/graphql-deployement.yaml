@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  graph-graphql-apps
+  namespace: dependencies
+  labels:
+    app:  dependencies-graph-graphql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  dependencies-graph-graphql
+  template:
+    metadata:
+      labels:
+        app:  dependencies-graph-graphql
+    spec:
+      imagePullSecrets:
+      - name: github
+      containers:
+      - name:  dependencies-graph-graphql
+        image: docker.pkg.github.com/xclemence/dependencies-graph-graphql/dependencies-graph-graphql:1.0.0
+        env:
+          - name: NEO4J_HOST
+            value: bolt://neo4j-service
+        ports:
+        - containerPort: 4001
+          protocol: TCP
+

@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  dependencies-graph-graphql :
+    image: dependencies-graph-graphql:test
+    build:
+      context: ../../dependencies-graph-graphql
+      dockerfile: Dockerfile
+    ports: 
+      - 4001:4001
+    environment: 
+      - NEO4J_HOST=bolt://db
+    links: 
+      - db
