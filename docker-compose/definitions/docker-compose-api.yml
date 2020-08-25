@@ -4,7 +4,7 @@ services:
   dependencies-graph-api:
     image: dependencies-graph-api:test
     build:
-      context: ../../dependencies-graph-services/src
+      context: ../../../dependencies-graph-services/src
       dockerfile: Dependencies.Graph.Api/Dockerfile
     ports: 
       - 5000:80

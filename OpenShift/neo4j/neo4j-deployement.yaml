@@ -32,12 +32,13 @@ spec:
           protocol: TCP
         volumeMounts:
         - name: neo4j-data
-          mountPath: /neo4j/data
+          mountPath: /data
         - name: neo4j-logs
-          mountPath: /neo4j/logs
+          mountPath: /logs
       volumes:
       - name: neo4j-data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: dependencies-storage
       - name: neo4j-logs
         emptyDir: {}
 

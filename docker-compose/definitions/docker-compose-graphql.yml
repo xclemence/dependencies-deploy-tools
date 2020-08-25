@@ -4,7 +4,7 @@ services:
   dependencies-graph-graphql :
     image: dependencies-graph-graphql:test
     build:
-      context: ../../dependencies-graph-graphql
+      context: ../../../dependencies-graph-graphql
       dockerfile: Dockerfile
     ports: 
       - 4001:4001

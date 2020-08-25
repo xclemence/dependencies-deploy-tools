@@ -4,7 +4,7 @@ services:
   dependencies-graph-view :
     image: dependencies-graph-view:test
     build:
-      context: ../../dependencies-graph-viewer
+      context: ../../../dependencies-graph-viewer
       dockerfile: Dockerfile
     ports: 
       - 4100:4200
