@@ -1,0 +1,16 @@
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: graph-api-ingress
+#   namespace: dependencies
+#   annotations:
+#     kubernetes.io/ingress.class: traefik
+#     traefik.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   rules:
+#   - http:
+#       paths:
+#       - path: /graph-api
+#         backend:
+#           serviceName: graph-api-service
+#           servicePort: 8000
