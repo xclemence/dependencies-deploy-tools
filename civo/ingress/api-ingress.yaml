@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    cert-manager.io/issuer: "dependencies-issuer-prod"
+  name: api-ingress
+spec:
+  rules:
+    - host: www.dependencies-graph.xyz
+      http:
+        paths:
+          - backend:
+              serviceName: graph-graphql-service
+              servicePort: 4001
+            path: /graph-graphql(/|$)(.*)
+          - backend:
+              serviceName: graph-api-service
+              servicePort: 8000
+            path: /graph-api(/|$)(.*)
+          
+  tls:
+    - hosts:
+        - www.dependencies-graph.xyz
+      secretName: dependencies-tls

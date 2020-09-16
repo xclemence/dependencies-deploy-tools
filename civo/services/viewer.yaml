@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  graph-viewer-apps
-  namespace: dependencies
   labels:
     app:  dependencies-graph-viewer
 spec:
@@ -22,8 +21,23 @@ spec:
         image: xclemence/dependencies-graph-viewer:1.2.0
         env:
           - name: DEPENDENCIES_GRAPHQL_URI
-            value: http://f5128a62-8f80-46a8-986a-82d147f68e99.k8s.civo.com/graph-graphql/graphql
+            value: https://www.dependencies-graph.xyz/graph-graphql/graphql
         ports:
         - containerPort: 4200
           protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: graph-viewer-service
+spec:
+  selector:
+    app: dependencies-graph-viewer
+  ports:
+    - protocol: TCP
+      name: http
+      port: 4200
+      targetPort: 4200
 
