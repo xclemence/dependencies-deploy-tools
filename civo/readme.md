@@ -1,4 +1,4 @@
-# Deploy Dependencies Graph on Civo K3
+# Deploy Dependencies Graph on Civo K3s
 
 ## Prerequisite
 
@@ -56,3 +56,10 @@ helm install longhorn ./longhorn/chart/ --namespace longhorn-system --create-nam
 ## Dependencies Graph
 
 Deploy all yaml files inside services and ingress directories
+
+Kubernetes items used:
+- Issuer: Cert manager item to managed sertificate
+- Deployment: Declarative updates for Pods ReplicaSets.
+- Sevice: Expose an application running on a set of Pods as a network service.
+- PersistentVolumeClaim: request for storage
+- Ingress (with nginx): Manages external access to the services in a cluster
