@@ -1,41 +1,51 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  graph-graphql-apps
+  name:  graph-api-apps
   labels:
-    app:  dependencies-graph-graphql
+    app:  dependencies-graph-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app:  dependencies-graph-graphql
+      app:  dependencies-graph-api
   template:
     metadata:
       labels:
-        app:  dependencies-graph-graphql
+        app:  dependencies-graph-api
     spec:
       containers:
-      - name:  dependencies-graph-graphql
-        image: xclemence/dependencies-graph-graphql:1.0.2
+      - name:  dependencies-graph-api
+        image: xclemence/dependencies-graph-api:1.1.0
         env:
-          - name: NEO4J_HOST
-            value: bolt://neo4j-service
+          - name: GraphConfig__Uri
+            valueFrom:
+              configMapKeyRef:
+                name: dependencise-config
+                key: neo4jDatabase
+          - name: ASPNETCORE_URLS
+            value: http://*:8000
         ports:
-        - containerPort: 4001
+        - containerPort: 8080
           protocol: TCP
+        volumeMounts:
+        - name: api-logs
+          mountPath: /api/logs
+      volumes:
+      - name: api-logs
+        emptyDir: {}
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: graph-graphql-service
+  name: graph-api-service
 spec:
   selector:
-    app: dependencies-graph-graphql
+    app: dependencies-graph-api
   ports:
     - protocol: TCP
       name: http
-      port: 4001
-      targetPort: 4001
-
+      port: 8000
+      targetPort: 8000

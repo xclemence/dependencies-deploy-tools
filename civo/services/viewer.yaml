@@ -21,7 +21,10 @@ spec:
         image: xclemence/dependencies-graph-viewer:1.2.0
         env:
           - name: DEPENDENCIES_GRAPHQL_URI
-            value: https://www.dependencies-graph.xyz/graph-graphql/graphql
+            valueFrom:
+              configMapKeyRef:
+                name: dependencise-config
+                key: graphqlUri
         ports:
         - containerPort: 4200
           protocol: TCP
