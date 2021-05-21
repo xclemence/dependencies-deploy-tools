@@ -1,0 +1,30 @@
+---
+
+- name: ensure manifest dir exists
+  file:
+    path: "{{manifest_base_dir}}/graph/neo4j"
+    state: directory
+
+- name: create manifest template storage
+  template:
+    src: storage.yaml
+    dest: "{{manifest_base_dir}}/graph/neo4j/storage.yaml"
+
+- name: Apply storage
+  community.kubernetes.k8s:
+    state: present
+    kubeconfig: "{{ kube_config_file }}"
+    src: "{{manifest_base_dir}}/graph/neo4j/storage.yaml"
+    namespace: graph
+
+- name: create manifest template neo4j
+  template:
+    src: neo4j.yaml
+    dest: "{{manifest_base_dir}}/graph/neo4j/neo4j.yaml"
+
+- name: Apply neo4j
+  community.kubernetes.k8s:
+    state: present
+    kubeconfig: "{{ kube_config_file }}"
+    src: "{{manifest_base_dir}}/graph/neo4j/neo4j.yaml"
+    namespace: graph

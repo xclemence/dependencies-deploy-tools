@@ -1,0 +1,43 @@
+---
+
+- name: ensure manifest dir exists
+  file:
+    path: "{{manifest_base_dir}}/graph/gql"
+    state: directory
+
+- name: create manifest template config map
+  template:
+    src: graphql-config-map.yaml
+    dest: "{{manifest_base_dir}}/graph/gql/graphql-config-map.yaml"
+
+- name: Apply config map
+  community.kubernetes.k8s:
+    state: present
+    kubeconfig: "{{ kube_config_file }}"
+    src: "{{manifest_base_dir}}/graph/gql/graphql-config-map.yaml"
+    namespace: graph
+
+- name: create manifest template graphql
+  template:
+    src: graphql.yaml
+    dest: "{{manifest_base_dir}}/graph/gql/graphql.yaml"
+
+- name: Apply graphql
+  community.kubernetes.k8s:
+    state: present
+    kubeconfig: "{{ kube_config_file }}"
+    src: "{{manifest_base_dir}}/graph/gql/graphql.yaml"
+    namespace: graph
+
+- name: create manifest template ingress
+  template:
+    src: graphql-ingress.yaml
+    dest: "{{manifest_base_dir}}/graph/gql/graphql-ingress.yaml"
+
+- name: Apply graphql ingress
+  community.kubernetes.k8s:
+    state: present
+    kubeconfig: "{{ kube_config_file }}"
+    src: "{{manifest_base_dir}}/graph/gql/graphql-ingress.yaml"
+    namespace: graph
+

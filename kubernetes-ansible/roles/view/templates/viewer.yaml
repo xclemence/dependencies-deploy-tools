@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  graph-viewer-apps
+  labels:
+    app:  dependencies-graph-viewer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  dependencies-graph-viewer
+  template:
+    metadata:
+      labels:
+        app:  dependencies-graph-viewer
+    spec:
+      imagePullSecrets:
+      - name: github
+      containers:
+      - name:  dependencies-graph-viewer
+        image: xclemence/dependencies-graph-viewer:buildx-test
+        env:
+          - name: DEPENDENCIES_GRAPHQL_URI
+            valueFrom:
+              configMapKeyRef:
+                name: viewer-config
+                key: graphqlUri
+          - name: SECURITY_ENABLED
+            value: "false"
+        ports:
+        - containerPort: 80
+          protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: graph-viewer-service
+spec:
+  selector:
+    app: dependencies-graph-viewer
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 80
+

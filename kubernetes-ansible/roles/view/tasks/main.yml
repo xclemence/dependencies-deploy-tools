@@ -1,0 +1,43 @@
+---
+
+- name: ensure manifest dir exists
+  file:
+    path: "{{manifest_base_dir}}/graph/view"
+    state: directory
+
+- name: create manifest template config map
+  template:
+    src: viewer-config-map.yaml
+    dest: "{{manifest_base_dir}}/graph/view/viewer-config-map.yaml"
+
+- name: Apply config map
+  community.kubernetes.k8s:
+    state: present
+    kubeconfig: "{{ kube_config_file }}"
+    src: "{{manifest_base_dir}}/graph/view/viewer-config-map.yaml"
+    namespace: graph
+
+- name: create manifest template viewer
+  template:
+    src: viewer.yaml
+    dest: "{{manifest_base_dir}}/graph/view/viewer.yaml"
+
+- name: Apply viewer
+  community.kubernetes.k8s:
+    state: present
+    kubeconfig: "{{ kube_config_file }}"
+    src: "{{manifest_base_dir}}/graph/view/viewer.yaml"
+    namespace: graph
+
+- name: create manifest template ingress
+  template:
+    src: viewer-ingress.yaml
+    dest: "{{manifest_base_dir}}/graph/view/viewer-ingress.yaml"
+
+- name: Apply viewer ingress
+  community.kubernetes.k8s:
+    state: present
+    kubeconfig: "{{ kube_config_file }}"
+    src: "{{manifest_base_dir}}/graph/view/viewer-ingress.yaml"
+    namespace: graph
+

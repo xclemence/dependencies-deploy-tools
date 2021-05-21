@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  graph-api-apps
+  labels:
+    app:  dependencies-graph-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  dependencies-graph-api
+  template:
+    metadata:
+      labels:
+        app:  dependencies-graph-api
+    spec:
+      containers:
+      - name:  dependencies-graph-api
+        image: xclemence/dependencies-graph-api:1.1.0
+        env:
+          - name: GraphConfig__Uri
+            valueFrom:
+              configMapKeyRef:
+                name: dependencise-config
+                key: neo4jDatabase
+          - name: ASPNETCORE_URLS
+            value: http://*:8000
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - name: api-logs
+          mountPath: /api/logs
+      volumes:
+      - name: api-logs
+        emptyDir: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: graph-api-service
+spec:
+  selector:
+    app: dependencies-graph-api
+  ports:
+    - protocol: TCP
+      name: http
+      port: 8000
+      targetPort: 8000

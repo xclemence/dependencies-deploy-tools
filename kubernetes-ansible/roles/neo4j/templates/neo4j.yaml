@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neo4j-app
+  labels:
+    app: neo4j
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neo4j
+  template:
+    metadata:
+      labels:
+        app: neo4j
+    spec:
+      containers:
+      - name: neo4j
+        image: neo4j/neo4j-arm64-experimental:4.0.4-arm64
+        env:
+          - name: NEO4J_AUTH
+            value: none
+          - name: NEO4JLABS_PLUGINS
+            value: "[\"apoc\"]"
+        ports:
+        - containerPort: 7473
+          protocol: TCP
+        - containerPort: 7474
+          protocol: TCP
+        - containerPort: 7687
+          protocol: TCP
+        volumeMounts:
+        - name: neo4j-data
+          mountPath: /data
+        - name: neo4j-logs
+          mountPath: /logs
+      volumes:
+      - name: neo4j-data
+        persistentVolumeClaim:
+          claimName: dependencies-valume-claim
+      - name: neo4j-logs
+        emptyDir: {}
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: neo4j-service
+spec:
+  selector:
+    app: neo4j
+  ports:
+    - protocol: TCP
+      name: http
+      port: 7473
+      targetPort: 7473
+    - protocol: TCP
+      name: https
+      port: 7474
+      targetPort: 7474
+    - protocol: TCP
+      name: bolt
+      port: 7687
+      targetPort: 7687
+
+

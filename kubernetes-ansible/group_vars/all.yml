@@ -1,0 +1,8 @@
+---
+ansible_user: pi
+ansible_python_interpreter: /usr/bin/python3
+systemd_dir: /etc/systemd/system
+
+kube_config_file_dir: ~{{ ansible_user }}/.kube
+kube_config_file: "{{ kube_config_file_dir }}/config"
+manifest_base_dir: ~/kubernetes_manifests
