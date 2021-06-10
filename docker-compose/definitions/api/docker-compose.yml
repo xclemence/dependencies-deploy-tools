@@ -1,16 +1,18 @@
 version: '3'
 
 services:
-  dependencies-graph-api:
+  graph-service:
     image: dependencies-graph-api:test
     build:
-      context: ../../../dependencies-graph-services/src
+      context: "${PROJECTS_DIR}/dependencies-graph-services/src"
       dockerfile: Dependencies.Graph.Api/Dockerfile
     ports: 
       - 5000:80
-      - 5001:443
     environment:
-      - GraphConfig__Uri=bolt://db
+      - GraphConfig__Uri=bolt://neo4j_db_1
       - ASPNETCORE_URLS=http://*:80
-    links: 
-      - db
+
+networks:
+  default:
+    name: graph_network
+    external: true

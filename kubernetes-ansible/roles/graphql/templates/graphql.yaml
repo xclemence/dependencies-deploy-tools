@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  graph-graphql-apps
+  labels:
+    app:  dependencies-graph-graphql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  dependencies-graph-graphql
+  template:
+    metadata:
+      labels:
+        app:  dependencies-graph-graphql
+    spec:
+      containers:
+      - name:  dependencies-graph-graphql
+        image: xclemence/dependencies-graph-graphql:{{ graphql_version }}
+        env:
+          - name: NEO4J_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: graphql-config
+                key: neo4jDatabase
+        ports:
+        - containerPort: 4001
+          protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: graph-graphql-service
+spec:
+  selector:
+    app: dependencies-graph-graphql
+  ports:
+    - protocol: TCP
+      name: http
+      port: 4001
+      targetPort: 4001
+

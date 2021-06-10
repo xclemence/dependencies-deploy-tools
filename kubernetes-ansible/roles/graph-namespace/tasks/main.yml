@@ -1,0 +1,9 @@
+---
+
+- name: Create a k8s namespace
+  community.kubernetes.k8s:
+    name: graph
+    api_version: v1
+    kubeconfig: "{{ kube_config_file }}"
+    kind: Namespace
+    state: present

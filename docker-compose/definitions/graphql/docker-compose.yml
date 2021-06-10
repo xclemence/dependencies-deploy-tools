@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  graph-service:
+    image: dependencies-graph-graphql:test
+    build:
+      context: "${PROJECTS_DIR}/dependencies-graph-graphql"
+      dockerfile: Dockerfile
+    ports: 
+      - 4001:4001
+    environment: 
+      - NEO4J_HOST=bolt://neo4j_db_1
+      - GRAPH_SECURITY_ENABLED=false
+      - GRAPH_TOKEN_ROLES_PATH=resource_access.graph-graphql.roles
+      - GRAPH_TOKEN_AUTHORITY=http://keycloak_keycloak_1:8080/auth/realms/dependencies
+
+networks:
+  default:
+    name: graph_network
+    external: true

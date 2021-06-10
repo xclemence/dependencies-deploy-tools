@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  wait:
+    image: dokku/wait
+
+networks:
+  default:
+    name: graph_network
+    external: true
+    

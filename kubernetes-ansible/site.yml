@@ -1,0 +1,11 @@
+---
+
+- hosts: runner
+  gather_facts: yes
+  become: yes
+  roles:
+    - role: graph-namespace
+    - role: neo4j
+    - role: view
+    - role: graphql
+    - role: rest
