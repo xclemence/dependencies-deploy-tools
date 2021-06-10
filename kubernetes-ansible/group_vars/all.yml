@@ -6,3 +6,9 @@ systemd_dir: /etc/systemd/system
 kube_config_file_dir: ~{{ ansible_user }}/.kube
 kube_config_file: "{{ kube_config_file_dir }}/config"
 manifest_base_dir: ~/kubernetes_manifests
+
+
+viewer_version: 2.1.1
+rest_version: 2.0.0
+graphql_version: 2.0.0
+neo4j_version: 4.2.7-arm64

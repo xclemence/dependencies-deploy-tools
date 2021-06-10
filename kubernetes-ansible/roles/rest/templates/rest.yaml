@@ -16,17 +16,17 @@ spec:
     spec:
       containers:
       - name:  dependencies-graph-api
-        image: xclemence/dependencies-graph-api:1.1.0
+        image: xclemence/dependencies-graph-api:{{ rest_version }}
         env:
           - name: GraphConfig__Uri
             valueFrom:
               configMapKeyRef:
-                name: dependencise-config
+                name: rest-config
                 key: neo4jDatabase
           - name: ASPNETCORE_URLS
             value: http://*:8000
         ports:
-        - containerPort: 8080
+        - containerPort: 8000
           protocol: TCP
         volumeMounts:
         - name: api-logs

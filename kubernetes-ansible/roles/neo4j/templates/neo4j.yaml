@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: neo4j
-        image: neo4j/neo4j-arm64-experimental:4.0.4-arm64
+        image: neo4j/neo4j-arm64-experimental:{{ neo4j_version }}
         env:
           - name: NEO4J_AUTH
             value: none

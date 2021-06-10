@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name:  dependencies-graph-graphql
-        image: xclemence/dependencies-graph-graphql:1.0.3-test-multi
+        image: xclemence/dependencies-graph-graphql:{{ graphql_version }}
         env:
           - name: NEO4J_HOST
             valueFrom:

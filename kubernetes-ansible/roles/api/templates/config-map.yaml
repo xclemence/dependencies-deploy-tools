@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: dependencise-config
-data:
-  neo4jDatabase: "bolt://neo4j-service"
-  graphqlUri: "https://www.dependencies-graph.xyz/graph-graphql/graphql"
