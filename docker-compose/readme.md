@@ -47,4 +47,6 @@ docker exec -it keycloak_keycloak_1 /opt/jboss/keycloak/bin/standalone.sh -Djbos
 
 ```console
 
+docker exec -it keycloak_keycloak_1 /opt/jboss/keycloak/bin/standalone.sh -Djboss.socket.binding.port-offset=100 -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.strategy=OVERWRITE_EXISTING -Dkeycloak.profile.feature.upload_scripts=enabled -Dkeycloak.migration.file=/tmp/dependencies.json
+
 ```
