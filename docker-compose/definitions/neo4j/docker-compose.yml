@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    image: neo4j:4.0.4
+    image: neo4j:4.2.7
     ports: 
       - 7474:7474
       - 7687:7687
@@ -10,4 +10,9 @@ services:
       - NEO4J_AUTH=none
       - NEO4JLABS_PLUGINS=["apoc"]
     volumes:
-      - ../data/neo4j:/data
+      - ../../data/neo4j:/data
+
+networks:
+  default:
+    name: graph_network
+    external: true
