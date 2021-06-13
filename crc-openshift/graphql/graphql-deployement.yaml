@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: graphql-config
+  namespace: dep-graph
+  labels:
+    app: dependencies-graph-graphql
+data:
+  NEO4J_HOST: bolt://neo4j-service
+  GRAPH_SECURITY_ENABLED: "true"
+  GRAPH_TOKEN_ROLES_PATH: resource_access.graph-graphql.roles
+  GRAPH_TOKEN_AUTHORITY: http://keycloak-dep-graph.apps-crc.testing/auth/realms/dependencies
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  graphql-api
+  namespace: dep-graph
+  labels:
+    app:  dependencies-graph-graphql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  dependencies-graph-graphql
+  template:
+    metadata:
+      labels:
+        app:  dependencies-graph-graphql
+    spec:
+      imagePullSecrets:
+      - name: github
+      containers:
+      - name:  dependencies-graph-graphql
+        image: ghcr.io/xclemence/dependencies-graph-graphql:2.0.0
+        envFrom:
+        - configMapRef:
+            name: graphql-config
+        ports:
+        - containerPort: 4001
+          protocol: TCP
+

@@ -1,11 +1,25 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: neo4j-app
-  namespace: dependencies
+  name: neo4j-config
+  namespace: dep-graph
+  labels:
+    app: neo4j
+data:
+  NEO4J_AUTH: none
+  NEO4JLABS_PLUGINS: "[\"apoc\"]"
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: neo4j
+  namespace: dep-graph
   labels:
     app: neo4j
 spec:
+  serviceName: neo4j
   replicas: 1
   selector:
     matchLabels:
@@ -17,12 +31,10 @@ spec:
     spec:
       containers:
       - name: neo4j
-        image: neo4j:4.0.4
-        env:
-          - name: NEO4J_AUTH
-            value: none
-          - name: NEO4JLABS_PLUGINS
-            value: "[\"apoc\"]"
+        image: neo4j:4.2.7
+        envFrom:
+        - configMapRef:
+            name: neo4j-config
         ports:
         - containerPort: 7473
           protocol: TCP

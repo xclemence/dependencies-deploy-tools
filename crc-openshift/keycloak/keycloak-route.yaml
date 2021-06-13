@@ -1,12 +1,12 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: graph-viewer
-  namespace: dependencies
+  name: keycloak
+  namespace: dep-graph
 spec:
   path: /
   to:
     kind: Service
-    name: graph-viewer-service
+    name: keycloak
   port:
-    targetPort: 4200
+    targetPort: 8080
