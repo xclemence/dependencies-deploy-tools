@@ -79,7 +79,7 @@ kubectl apply -f .\keycloak\
 - Logon to Keycloak
   - http://keycloak-dep-graph.apps-crc.testing/auth/
   - user: admin
-  - passwork: admin
+  - password: admin
   - Add realm
   - Select file: dependencies-realm.json file
   - Create
@@ -89,7 +89,7 @@ kubectl apply -f .\keycloak\
 kubectl apply -f .\neo4j\
 ```
 
-- Deploy graphql api (/!\ need eycloak)
+- Deploy graphql api (/!\ need Keycloak)
 ```console
 kubectl apply -f .\graphql\
 ```
