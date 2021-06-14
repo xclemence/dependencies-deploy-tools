@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: viewer-config
+  namespace: dep-graph
+  labels:
+    app: dependencies-graph-viewer
+data:
+  DEPENDENCIES_GRAPHQL_URI: http://graphql-api-dep-graph.apps-crc.testing/graphql
+  SECURITY_ENABLED: "true"
+  SECURITY_SERVER: http://keycloak-dep-graph.apps-crc.testing/auth
+  SECURITY_REALM: dependencies
+  SECURITY_CLIENT_ID: graph
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  viewer
+  namespace: dep-graph
+  labels:
+    app:  dependencies-graph-viewer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  dependencies-graph-viewer
+  template:
+    metadata:
+      labels:
+        app:  dependencies-graph-viewer
+    spec:
+      serviceAccountName: useroot
+      containers:
+      - name:  dependencies-graph-viewer
+        image: ghcr.io/xclemence/dependencies-graph-viewer:2.1.1
+        envFrom:
+        - configMapRef:
+            name: viewer-config
+        ports:
+        - containerPort: 80
+          protocol: TCP
+

@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: viewer
+  namespace: dep-graph
+  labels:
+    app:  dependencies-graph-viewer
+spec:
+  path: /
+  to:
+    kind: Service
+    name: viewer-service
+  port:
+    targetPort: 80

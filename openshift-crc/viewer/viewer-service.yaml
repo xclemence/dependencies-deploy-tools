@@ -1,14 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: graph-viewer-service
-  namespace: dependencies
+  name: viewer-service
+  namespace: dep-graph
+  labels:
+    app:  dependencies-graph-viewer
 spec:
   selector:
     app: dependencies-graph-viewer
   ports:
     - protocol: TCP
       name: http
-      port: 4200
-      targetPort: 4200
+      port: 80
+      targetPort: 80
 
