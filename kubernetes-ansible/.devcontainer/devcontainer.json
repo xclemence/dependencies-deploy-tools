@@ -17,7 +17,7 @@
 	"extensions": [],
 
 	"containerEnv": {
-		"ANSIBLE_CONFIG": "/workspaces/dependencies-deploy-tools/kubernetes-ansible/ansible.cfg",
+		"ANSIBLE_CONFIG": "/workspaces/dependencies-graph-deploy-tools/kubernetes-ansible/ansible.cfg",
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
