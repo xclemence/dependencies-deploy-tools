@@ -1,4 +1,4 @@
-# dependencies-deploy-tools
+# Dependencies Graph deploy tools
 Scripts to deploy dependencies graph applications
 
 ### Deploy types:
