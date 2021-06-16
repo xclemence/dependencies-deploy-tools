@@ -1,0 +1,88 @@
+version: '3'
+
+services:
+  neo4j:
+    image: neo4j:4.2.7
+    profiles: ["neo4j"]
+    ports: 
+      - 7474:7474
+      - 7687:7687
+    environment:
+      - NEO4J_AUTH=none
+      - NEO4JLABS_PLUGINS=["apoc"]
+    volumes:
+      - ../data/neo4j:/data
+
+  viewer :
+    profiles: ["viewer"]
+    image: dependencies-graph-viewer:test
+    build:
+      context: "${PROJECTS_DIR}/dependencies-graph-viewer"
+      dockerfile: Dockerfile
+    ports: 
+      - 4200:80
+    environment: 
+      - DEPENDENCIES_GRAPHQL_URI=http://localhost:4001/graphql
+      - SECURITY_ENABLED=false
+      - SECURITY_SERVER=http://localhost:9080/auth
+      - SECURITY_REALM=dependencies
+      - SECURITY_CLIENT_ID=graph
+
+  graphql-api:
+    profiles: ["graphql"]
+    image: dependencies-graph-graphql:test
+    build:
+      context: "${PROJECTS_DIR}/dependencies-graph-graphql"
+      dockerfile: Dockerfile
+    ports: 
+      - 4001:4001
+    environment: 
+      - NEO4J_HOST=bolt://neo4j
+      - GRAPH_SECURITY_ENABLED=true
+      - GRAPH_TOKEN_ROLES_PATH=resource_access.graph-graphql.roles
+      - GRAPH_TOKEN_AUTHORITY=http://keycloak:8080/auth/realms/dependencies
+    depends_on:
+      - keycloak
+
+  rest-api:
+    profiles: ["rest"]
+    image: dependencies-graph-api:test
+    build:
+      context: "${PROJECTS_DIR}/dependencies-graph-services/src"
+      dockerfile: Dependencies.Graph.Api/Dockerfile
+    ports: 
+      - 5000:80
+    environment:
+      - GraphConfig__Uri=bolt://neo4j
+      - ASPNETCORE_URLS=http://*:80
+
+  postgres:
+    profiles: ["keycloak"]
+    image: postgres:13-alpine
+    volumes:
+      - ../data/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+
+  keycloak:
+    profiles: ["keycloak"]
+    image: jboss/keycloak:13.0.1
+    volumes:
+      - ../data/keycloak:/tmp
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+      JAVA_OPTS_APPEND: "-Dkeycloak.profile.feature.upload_scripts=enabled"
+    ports:
+      - 9080:8080
+    depends_on:
+      - postgres
+      

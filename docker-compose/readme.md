@@ -19,15 +19,14 @@ PROJECTS_DIR=C:\Sources\dependencies
 
 ## Description
 
-The project contains one docker-compose file by component. this organization allows users to selected components easily to run. All composes use same network.
+The project use docker compose profiles to pilot the selected containers services.
 
-### Definitions
-- api: [dependencies graph rest api](https://github.com/xclemence/dependencies-graph-services)
-- graphq: [dependencies graph graphql api](https://github.com/xclemence/dependencies-graph-graphql)
+### Service
+- rest-api: [dependencies graph rest api](https://github.com/xclemence/dependencies-graph-services)
+- graphq-api: [dependencies graph graphql api](https://github.com/xclemence/dependencies-graph-graphql)
 - keycloak: authentication provider (keycloak + postgres)
 - neo4j: graph database
-- view: [dependencies graph viewer](https://github.com/xclemence/dependencies-graph-viewer)
-- wait: container to wait another container started (used to orchestrate all containers loading)
+- viewer: [dependencies graph viewer](https://github.com/xclemence/dependencies-graph-viewer)
 
 ### Builders
 Scripts bat to build sources and generate docker images. All images are tagged with "test" version
@@ -40,13 +39,13 @@ Scripts bat to create containers (one bat by tools + one for all)
 ### Export Keycloak configuration
 
 ```console
-docker exec -it keycloak_keycloak_1 /opt/jboss/keycloak/bin/standalone.sh -Djboss.socket.binding.port-offset=100 -Dkeycloak.migration.action=export -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.realmName=dependencies -Dkeycloak.migration.usersExportStrategy=REALM_FILE -Dkeycloak.migration.file=/tmp/dependencies.json
+docker exec -it dependencies-graph_keycloak_1 /opt/jboss/keycloak/bin/standalone.sh -Djboss.socket.binding.port-offset=100 -Dkeycloak.migration.action=export -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.realmName=dependencies -Dkeycloak.migration.usersExportStrategy=REALM_FILE -Dkeycloak.migration.file=/tmp/dependencies.json
 ```
 
 ### Import Keycloak configuration
 
 ```console
 
-docker exec -it keycloak_keycloak_1 /opt/jboss/keycloak/bin/standalone.sh -Djboss.socket.binding.port-offset=100 -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.strategy=OVERWRITE_EXISTING -Dkeycloak.profile.feature.upload_scripts=enabled -Dkeycloak.migration.file=/tmp/dependencies.json
+docker exec -it dependencies-graph_keycloak_1 /opt/jboss/keycloak/bin/standalone.sh -Djboss.socket.binding.port-offset=100 -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.strategy=OVERWRITE_EXISTING -Dkeycloak.profile.feature.upload_scripts=enabled -Dkeycloak.migration.file=/tmp/dependencies.json
 
 ```

@@ -1,5 +1,6 @@
 SET currentPath=%~dp0
 
-docker-compose -f "%currentPath%../definitions/viewer/docker-compose.yml" ^
-               --env-file "%currentPath%../.env" ^
-               up -d
+docker-compose -f "%currentPath%..\dependencies-graph\docker-compose.yml" ^
+               --env-file "%currentPath%..\.env" ^
+               --profile viewer ^
+               up

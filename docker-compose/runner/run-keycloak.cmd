@@ -1,4 +1,6 @@
 SET currentPath=%~dp0
 
-docker-compose -f "%currentPath%../definitions/keycloak/docker-compose.yml" ^
-               up -d
+docker-compose -f "%currentPath%..\dependencies-graph\docker-compose.yml" ^
+               --env-file "%currentPath%..\.env" ^
+               --profile keycloak ^
+               up
